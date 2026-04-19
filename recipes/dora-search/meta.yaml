@@ -1,0 +1,51 @@
+{% set version = "0.1.12" %}
+
+package:
+  name: dora-search
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/d/dora-search/dora_search-{{ version }}.tar.gz
+  sha256: 2956fd2c4c7e4b9a4830e83f0d4cf961be45cfba1a2f0570281e91d15ac516fb
+
+build:
+  entry_points:
+    - dora=dora.__main__:main
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  host:
+    - python
+    - pip
+    - setuptools
+  run:
+    - hydra-core
+    - omegaconf
+    - python
+    - pytorch
+    # - pytorch-lightning <1.9
+    - retrying
+    - submitit
+    - treetable
+
+test:
+  imports:
+    - dora
+  commands:
+    - pip check
+    - dora --help
+  requires:
+    - pip
+    - python
+
+about:
+  home: https://github.com/facebookresearch/dora
+  summary: Easy grid searches for ML.
+  license: MIT
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - fitzgeralddp
